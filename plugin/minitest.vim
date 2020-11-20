@@ -35,8 +35,8 @@ function! s:RunNearestTest()
   if s:InTestFile()
 
     let l:last_spec_file = s:CurrentFilePath()
-    let l:last_spec_file_with_line = s:last_spec_file . ":" . line(".")
-    let l:test = s:last_spec_file_with_line
+    let l:last_spec_file_with_line = l:last_spec_file . ":" . line(".")
+    let l:test = l:last_spec_file_with_line
 
     call s:SetLastTestCommand(l:test)
     call s:RunTests(l:test)
