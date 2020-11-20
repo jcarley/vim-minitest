@@ -33,7 +33,11 @@ endfunction
 
 function! s:RunNearestTest()
   if s:InTestFile()
-    let l:test = s:AppendTestFunctionNameToTestFilePath(s:NearestFunctionName())
+
+    let l:last_spec_file = s:CurrentFilePath()
+    let l:last_spec_file_with_line = s:last_spec_file . ":" . line(".")
+    let l:test = s:last_spec_file_with_line
+
     call s:SetLastTestCommand(l:test)
     call s:RunTests(l:test)
   else
@@ -50,6 +54,10 @@ endfunction
 function! s:InTestFile()
   " File path contains a segment test_<words, underscores>.rb
   return match(expand("%"), '_test.rb$') != -1
+endfunction
+
+function! s:CurrentFilePath()
+  return @%
 endfunction
 
 function! s:SetLastTestCommand(test)
