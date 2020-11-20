@@ -49,7 +49,7 @@ endfunction
 
 function! s:InTestFile()
   " File path contains a segment test_<words, underscores>.rb
-  return match(expand("%"), 'test_.*.rb$') != -1
+  return match(expand("%"), '_test.rb$') != -1
 endfunction
 
 function! s:SetLastTestCommand(test)
