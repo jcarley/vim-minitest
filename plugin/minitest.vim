@@ -16,7 +16,7 @@ if !exists("g:minitest_command")
 endif
 
 function! s:RunAllTests()
-  let l:test = "test/test_helper.rb"
+  let l:test = ""
   call s:SetLastTestCommand(l:test)
   call s:RunTests(l:test)
 endfunction
