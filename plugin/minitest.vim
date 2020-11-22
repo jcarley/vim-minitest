@@ -115,3 +115,45 @@ endfunction
 function! s:NthWordOfLine(n, lineNumber)
   return split(getline(a:lineNumber))[a:n]
 endfunction
+
+function! MakeMinitestFileIfMissing()
+ruby << EOF
+  class MakeMinitestFileIfMissing
+    def self.for(buffer)
+      if test_file?(buffer) || already_exists?(test_for_buffer(buffer))
+        puts "test already exists"
+        return
+      end
+
+      # puts "going to make #{directory_for_test(buffer)}"
+      # puts "going to make #{test_for_buffer(buffer)}"
+      system 'mkdir', '-p', directory_for_test(buffer)
+      File.open(test_for_buffer(buffer), File::WRONLY|File::CREAT|File::EXCL) do |file|
+        file.write "require 'test_helper'"
+      end
+    end
+
+    private
+    def self.test_file?(file)
+      file.match(/.*_test.rb$/)
+    end
+
+    def self.already_exists?(b)
+      File.exists?(b)
+    end
+
+    def self.test_for_buffer(b)
+      test_buffer = b.sub('/app/', '/test/')
+      test_buffer.sub!('/lib/', '/test/lib/')
+      test_buffer.sub!('.rb', '_test.rb')
+      return test_buffer
+    end
+
+    def self.directory_for_test(b)
+      File.dirname(self.test_for_buffer(b))
+    end
+  end
+  buffer = VIM::Buffer.current.name
+  MakeMinitestFileIfMissing.for(buffer)
+EOF
+endfunction
