@@ -118,7 +118,7 @@ function! s:NthWordOfLine(n, lineNumber)
   return split(getline(a:lineNumber))[a:n]
 endfunction
 
-function! MakeMinitestFileIfMissing()
+function! s:MakeMinitestFileIfMissing()
 ruby << EOF
   class MakeMinitestFileIfMissing
     def self.for(buffer)
